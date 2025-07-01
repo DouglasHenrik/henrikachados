@@ -10,12 +10,22 @@
     margin: 0; padding: 0; background: #f9f9f9;
   }
   header {
-    background: #ff5722;
+    background: #002147; /* azul marinho escuro */
     color: white;
     padding: 1rem;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  /* Ícone bolsa de compras (usando SVG inline) */
+  .bag-icon {
+    width: 28px;
+    height: 28px;
+    fill: white;
   }
   nav {
     display: flex;
@@ -26,7 +36,7 @@
     flex-wrap: wrap;
   }
   nav button {
-    background: #ff7043;
+    background: #003366; /* azul mais claro para botão */
     border: none;
     padding: 0.5rem 1rem;
     color: white;
@@ -36,27 +46,37 @@
     transition: background 0.3s;
   }
   nav button:hover {
-    background: #e64a19;
+    background: #001f4d; /* azul ainda mais escuro no hover */
   }
   nav button.active {
-    background: #e64a19;
+    background: #001f4d;
   }
   main {
     max-width: 900px;
     margin: 2rem auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-    gap: 1.5rem;
     padding: 0 1rem;
   }
+  
+  /* Carousel container */
+  .carousel {
+    position: relative;
+    overflow: hidden;
+  }
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
   .produto {
+    min-width: 250px;
     background: white;
     border-radius: 6px;
     box-shadow: 0 0 8px rgb(0 0 0 / 0.1);
     padding: 1rem;
+    margin-right: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-shrink: 0;
   }
   .produto img {
     max-width: 100%;
@@ -70,12 +90,12 @@
     text-align: center;
   }
   .produto .preco {
-    color: #388e3c;
+    color: #002147;
     font-weight: bold;
     margin-bottom: 1rem;
   }
   .produto a {
-    background: #ff5722;
+    background: #003366;
     color: white;
     text-decoration: none;
     padding: 0.5rem 1rem;
@@ -84,8 +104,37 @@
     transition: background 0.3s;
   }
   .produto a:hover {
-    background: #e64a19;
+    background: #001f4d;
   }
+  
+  /* Carousel buttons */
+  .carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #002147;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    user-select: none;
+    z-index: 10;
+  }
+  .carousel-button:hover {
+    opacity: 1;
+  }
+  .carousel-button.prev {
+    left: 5px;
+  }
+  .carousel-button.next {
+    right: 5px;
+  }
+  
   footer {
     text-align: center;
     padding: 1rem;
@@ -93,18 +142,41 @@
     font-size: 0.9rem;
     margin-top: 3rem;
   }
+
+  /* Responsividade */
+  @media (max-width: 600px) {
+    .produto {
+      min-width: 200px;
+      margin-right: 0.5rem;
+    }
+    nav button {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+    }
+  }
 </style>
 </head>
 <body>
 
-<header>Henrik Achados - Shopee Afiliados</header>
+<header>
+  HENRIK ACHADOS
+  <svg class="bag-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M6 2L4 6v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6l-2-4H6zm0 2h12l1.2 2.4H4.8L6 4zm2 5a2 2 0 1 1 4 0v1h-4v-1zm-4 6v-5h14v5H4z"/>
+  </svg>
+</header>
 
 <nav id="navCategorias">
-  <!-- Botões de categoria aqui -->
+  <!-- Botões categorias -->
 </nav>
 
-<main id="produtosContainer">
-  <!-- Produtos aqui -->
+<main>
+  <div class="carousel" id="carousel">
+    <button class="carousel-button prev" id="prevBtn" aria-label="Anterior">&#10094;</button>
+    <div class="carousel-track" id="carouselTrack">
+      <!-- Produtos vão aqui -->
+    </div>
+    <button class="carousel-button next" id="nextBtn" aria-label="Próximo">&#10095;</button>
+  </div>
 </main>
 
 <footer>
@@ -112,7 +184,6 @@
 </footer>
 
 <script>
-  // Categorias e produtos (dados fictícios)
   const categorias = [
     "Celulares e Smartphones",
     "Acessórios para Celulares",
@@ -195,22 +266,30 @@
   };
 
   const nav = document.getElementById("navCategorias");
-  const produtosContainer = document.getElementById("produtosContainer");
+  const carouselTrack = document.getElementById("carouselTrack");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
 
-  // Função para criar os botões de categorias
+  let currentCategoria = categorias[0];
+  let currentIndex = 0;
+
+  // Criar botões das categorias
   function criarBotoesCategorias() {
     categorias.forEach((categoria, index) => {
       const btn = document.createElement("button");
       btn.textContent = categoria;
       btn.addEventListener("click", () => {
+        currentCategoria = categoria;
+        currentIndex = 0;
         mostrarProdutos(categoria);
         setActiveButton(index);
+        updateCarousel();
       });
       nav.appendChild(btn);
     });
   }
 
-  // Função para marcar o botão ativo
+  // Marcar botão ativo
   function setActiveButton(activeIndex) {
     const botoes = nav.querySelectorAll("button");
     botoes.forEach((btn, idx) => {
@@ -218,9 +297,9 @@
     });
   }
 
-  // Função para mostrar os produtos da categoria selecionada
+  // Mostrar produtos na track do carousel
   function mostrarProdutos(categoria) {
-    produtosContainer.innerHTML = "";
+    carouselTrack.innerHTML = "";
     produtos[categoria].forEach(prod => {
       const card = document.createElement("div");
       card.className = "produto";
@@ -230,14 +309,42 @@
         <div class="preco">${prod.preco}</div>
         <a href="${prod.linkAfiliado}" target="_blank" rel="noopener noreferrer">Comprar na Shopee</a>
       `;
-      produtosContainer.appendChild(card);
+      carouselTrack.appendChild(card);
     });
   }
 
-  // Inicializa o site
+  // Atualiza o deslocamento do carousel para mostrar o produto atual
+  function updateCarousel() {
+    const cardWidth = carouselTrack.querySelector(".produto").offsetWidth + 16; // 16 = margin-right approx
+    const maxIndex = produtos[currentCategoria].length - 1;
+    if (currentIndex < 0) currentIndex = 0;
+    if (currentIndex > maxIndex) currentIndex = maxIndex;
+
+    carouselTrack.style.transform = `translateX(-${cardWidth * currentIndex}px)`;
+
+    // Desabilita botões se estiver no começo ou fim
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === maxIndex;
+  }
+
+  // Eventos dos botões do carousel
+  prevBtn.addEventListener("click", () => {
+    currentIndex--;
+    updateCarousel();
+  });
+  nextBtn.addEventListener("click", () => {
+    currentIndex++;
+    updateCarousel();
+  });
+
+  // Inicialização
   criarBotoesCategorias();
-  mostrarProdutos(categorias[0]);
+  mostrarProdutos(currentCategoria);
   setActiveButton(0);
+  updateCarousel();
+
+  // Ajustar carousel ao redimensionar (para evitar erro se o tamanho mudar)
+  window.addEventListener("resize", updateCarousel);
 </script>
 
 </body>
