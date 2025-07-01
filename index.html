@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Henrik Achados - Afiliado Shopee</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0; background: #f9f9f9;
+  }
+  header {
+    background: #ff5722;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    background: #fff;
+    padding: 0.5rem 0;
+    flex-wrap: wrap;
+  }
+  nav button {
+    background: #ff7043;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  nav button:hover {
+    background: #e64a19;
+  }
+  nav button.active {
+    background: #e64a19;
+  }
+  main {
+    max-width: 900px;
+    margin: 2rem auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+  .produto {
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgb(0 0 0 / 0.1);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .produto img {
+    max-width: 100%;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+  }
+  .produto h3 {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    text-align: center;
+  }
+  .produto .preco {
+    color: #388e3c;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  .produto a {
+    background: #ff5722;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  .produto a:hover {
+    background: #e64a19;
+  }
+  footer {
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<header>Henrik Achados - Shopee Afiliados</header>
+
+<nav id="navCategorias">
+  <!-- Botões de categoria aqui -->
+</nav>
+
+<main id="produtosContainer">
+  <!-- Produtos aqui -->
+</main>
+
+<footer>
+  Site de afiliado fictício para Shopee - Desenvolvido por Henrik
+</footer>
+
+<script>
+  // Categorias e produtos (dados fictícios)
+  const categorias = [
+    "Celulares e Smartphones",
+    "Acessórios para Celulares",
+    "Moda Feminina",
+    "Casa e Decoração",
+    "Eletrônicos",
+  ];
+
+  const produtos = {
+    "Celulares e Smartphones": [
+      {
+        nome: "Smartphone XYZ 128GB",
+        preco: "R$ 1.299,00",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hz5jnw4j8jcf",
+        linkAfiliado: "https://shopee.com.br/smartphone_xyz?afiliado=henrik"
+      },
+      {
+        nome: "Smartphone ABC 64GB",
+        preco: "R$ 999,00",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hyy34l5e7jcf",
+        linkAfiliado: "https://shopee.com.br/smartphone_abc?afiliado=henrik"
+      }
+    ],
+    "Acessórios para Celulares": [
+      {
+        nome: "Capa Silicone para Smartphone",
+        preco: "R$ 29,90",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hyx9nl3f7jcf",
+        linkAfiliado: "https://shopee.com.br/capa_silicone?afiliado=henrik"
+      },
+      {
+        nome: "Carregador Rápido USB-C",
+        preco: "R$ 59,90",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hyqdl13m7jcf",
+        linkAfiliado: "https://shopee.com.br/carregador_usb_c?afiliado=henrik"
+      }
+    ],
+    "Moda Feminina": [
+      {
+        nome: "Vestido Floral Verão",
+        preco: "R$ 89,90",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hyt79nq27jcf",
+        linkAfiliado: "https://shopee.com.br/vestido_floral?afiliado=henrik"
+      },
+      {
+        nome: "Blusa Básica Algodão",
+        preco: "R$ 39,90",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hz02nkrm7jcf",
+        linkAfiliado: "https://shopee.com.br/blusa_basica?afiliado=henrik"
+      }
+    ],
+    "Casa e Decoração": [
+      {
+        nome: "Luminária LED Decorativa",
+        preco: "R$ 79,90",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hz23nktj7jcf",
+        linkAfiliado: "https://shopee.com.br/luminaria_led?afiliado=henrik"
+      },
+      {
+        nome: "Kit Cama Solteiro 3 peças",
+        preco: "R$ 129,90",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hz5jnw4j8jcf",
+        linkAfiliado: "https://shopee.com.br/kit_cama?afiliado=henrik"
+      }
+    ],
+    "Eletrônicos": [
+      {
+        nome: "Fone Bluetooth Sem Fio",
+        preco: "R$ 149,90",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hz7jnw0j7jcf",
+        linkAfiliado: "https://shopee.com.br/fone_bluetooth?afiliado=henrik"
+      },
+      {
+        nome: "Smartwatch XY123",
+        preco: "R$ 299,90",
+        imagem: "https://cf.shopee.com.br/file/sg-11134201-23010-o5hz2lnkr07jcf",
+        linkAfiliado: "https://shopee.com.br/smartwatch_xy123?afiliado=henrik"
+      }
+    ],
+  };
+
+  const nav = document.getElementById("navCategorias");
+  const produtosContainer = document.getElementById("produtosContainer");
+
+  // Função para criar os botões de categorias
+  function criarBotoesCategorias() {
+    categorias.forEach((categoria, index) => {
+      const btn = document.createElement("button");
+      btn.textContent = categoria;
+      btn.addEventListener("click", () => {
+        mostrarProdutos(categoria);
+        setActiveButton(index);
+      });
+      nav.appendChild(btn);
+    });
+  }
+
+  // Função para marcar o botão ativo
+  function setActiveButton(activeIndex) {
+    const botoes = nav.querySelectorAll("button");
+    botoes.forEach((btn, idx) => {
+      btn.classList.toggle("active", idx === activeIndex);
+    });
+  }
+
+  // Função para mostrar os produtos da categoria selecionada
+  function mostrarProdutos(categoria) {
+    produtosContainer.innerHTML = "";
+    produtos[categoria].forEach(prod => {
+      const card = document.createElement("div");
+      card.className = "produto";
+      card.innerHTML = `
+        <img src="${prod.imagem}" alt="${prod.nome}" />
+        <h3>${prod.nome}</h3>
+        <div class="preco">${prod.preco}</div>
+        <a href="${prod.linkAfiliado}" target="_blank" rel="noopener noreferrer">Comprar na Shopee</a>
+      `;
+      produtosContainer.appendChild(card);
+    });
+  }
+
+  // Inicializa o site
+  criarBotoesCategorias();
+  mostrarProdutos(categorias[0]);
+  setActiveButton(0);
+</script>
+
+</body>
+</html>
